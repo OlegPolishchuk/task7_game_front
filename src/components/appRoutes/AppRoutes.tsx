@@ -4,15 +4,17 @@ import {Login} from "pages/Login";
 import {useAppSelector} from "hooks/useAppSelector";
 import {selectIsActive} from "store/selectors";
 import {App} from "App";
+import {ProtectedRoute} from "components/protectedRoute/ProtectedRoute";
+import {Board} from "pages/Board";
 
 export const AppRoutes = () => {
   const isActive = useAppSelector(selectIsActive);
 
   return (
     <Routes>
-      <Route path={'/'} element={ isActive ? <App /> : <Login />}/>
+      <Route path={'/'} element={ <ProtectedRoute children={<App />} />}/>
       <Route path={'/login'} element={<Login />}/>
-      <Route path={'/room/:roomId'} element={<div>room</div>}/>
+      <Route path={'/room/:roomId'} element={<ProtectedRoute children={<Board />} />}/>
       <Route path={'*'} element={<div>Not found</div>} />
     </Routes>
   );

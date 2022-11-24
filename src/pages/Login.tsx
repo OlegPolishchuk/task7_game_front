@@ -2,15 +2,18 @@ import React, {FormEvent, useEffect, useState} from 'react';
 import bg_login from 'assets/bg_login.png'
 import {Box, Button, Container, TextField} from "@mui/material";
 import {useAppSelector} from "hooks/useAppSelector";
-import {selectError} from "store/selectors";
+import {selectError, selectIsActive} from "store/selectors";
 import {useAppDispatch} from "hooks/useAppDispatch";
 import {setError} from "store/reducers/appSlice";
 import {createConnection} from "store/reducers/actions/activateUser";
+import {useNavigate} from "react-router-dom";
 
 export const Login = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const error = useAppSelector(selectError);
+  const isActive = useAppSelector(selectIsActive);
 
   const [username, setUsername] = useState('');
 
@@ -31,6 +34,12 @@ export const Login = () => {
   const isInputValid = (value: string) => {
     return value.trim().length > 0
   }
+
+  useEffect(() => {
+    if (isActive) {
+      navigate('/')
+    }
+  }, [isActive])
 
   return (
     <Box
