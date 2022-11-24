@@ -12,6 +12,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route path={'/'} element={ isActive ? <App /> : <Login />}/>
       <Route path={'/login'} element={<Login />}/>
+      <Route path={'/room/:roomId'} element={<div>room</div>}/>
       <Route path={'*'} element={<div>Not found</div>} />
     </Routes>
   );

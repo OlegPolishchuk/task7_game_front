@@ -8,20 +8,32 @@ import {
   TextField
 } from "@mui/material";
 import {useAppDispatch, useAppSelector} from "hooks";
-import {selectAvailableUsers, selectChosenUser, selectUser} from "store/selectors";
+import {
+  selectAvailableUsers,
+  selectChosenUser, selectInvitedUser,
+  selectIsMeInvited, selectRoomId,
+  selectUser
+} from "store/selectors";
 import {User} from "store/reducers/types/types";
 import {deactivateUser} from "store/reducers/actions/deactivateUser";
 import {AcceptModal} from "components/acceptModal/AcceptModal";
 import {UsersList} from "components";
 import {inviteUser} from "store/reducers/actions";
-import {setChosenUser} from "store/reducers/appSlice";
+import {setChosenUser, setIsInvited} from "store/reducers/appSlice";
+import {API} from "api";
+import {acceptInvite} from "store/reducers/actions/acceptInvite";
+import {useNavigate} from "react-router-dom";
 
 export function App() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const currentUser = useAppSelector(selectUser);
   const users = useAppSelector(selectAvailableUsers);
   const chosenUser = useAppSelector(selectChosenUser);
+  const isMeInvited = useAppSelector(selectIsMeInvited);
+  const invitedUser = useAppSelector(selectInvitedUser);
+  const roomId = useAppSelector(selectRoomId);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -31,9 +43,17 @@ export function App() {
     setShowModal(true);
   }
 
+  const handleCloseIsMeInvitedModal = () => {
+    dispatch(setIsInvited(false));
+  }
+
   const handleSendInvite = () => {
     console.log(chosenUser)
-    dispatch(inviteUser(chosenUser))
+    dispatch(inviteUser({user: chosenUser, currentUser}))
+  }
+
+  const handleJoinToParty = () => {
+    dispatch(acceptInvite(invitedUser))
   }
 
   useEffect(() => {
@@ -41,6 +61,12 @@ export function App() {
       dispatch(deactivateUser());
     }
   }, [])
+
+  useEffect(() => {
+    if (roomId) {
+      navigate(`/room/${roomId}`)
+    }
+  }, [roomId])
 
   return (
     <>
@@ -96,6 +122,13 @@ export function App() {
           acceptCallback={handleSendInvite}
           closeCallback={setShowModal}
         />
+
+        <AcceptModal
+          title={'Looks like someone wants to play with you!'}
+          isOpen={isMeInvited}
+          acceptCallback={handleJoinToParty}
+          closeCallback={handleCloseIsMeInvitedModal}
+          />
 
       </Container>
     </>

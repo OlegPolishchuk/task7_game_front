@@ -36,8 +36,23 @@ export const API = {
     this.socket.emit('invite-user', user)
   },
 
-  userResponseSubscribe(accept: () => void) {
-    this.socket.on('invited', accept)
+  userInvitedSubscribe(getInvited: (user: User) => void) {
+    this.socket.on('me-invited', getInvited)
+  },
+
+  acceptInvite(fromUser: User, joinToRoom: (roomId: string) => void) {
+    this.socket.emit('invite-accept', fromUser);
+    this.socket.on('joined-to-room', joinToRoom)
+  },
+
+  userResponseSubscribe(
+    accept: () => void,
+  ) {
+    this.socket.on('invite-accepted', accept)
+  },
+
+  joinRoom(userId: string) {
+    this.socket.emit('join-room', userId)
   }
 
 }

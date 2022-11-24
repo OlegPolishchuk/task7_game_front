@@ -6,6 +6,9 @@ export type InitialState = {
   availableUsers: User[];
   chosenUser: User;
   inviteAccepted: boolean;
+  isInvited: boolean;
+  invitedUser: User;
+  roomId: string;
 }
 
 

@@ -10,6 +10,9 @@ const initialState: InitialState = {
   isLoading: false,
   isActive: false,
   inviteAccepted: false,
+  isInvited: false,
+  invitedUser: { username: '', userId: ''},
+  roomId: '',
 }
 
 const appSlice = createSlice({
@@ -51,6 +54,18 @@ const appSlice = createSlice({
 
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
+    },
+
+    setIsInvited: (state, action: PayloadAction<boolean>) => {
+      state.isInvited = action.payload;
+    },
+
+    setInvitedUser: (state, action: PayloadAction<User>) => {
+      state.invitedUser = action.payload;
+    },
+
+    setRoomId: (state, action: PayloadAction<string>) => {
+      state.roomId = action.payload;
     }
   },
 
@@ -82,4 +97,7 @@ export const {
   setInviteAccepted,
   setChosenUser,
   setIsLoading,
+  setIsInvited,
+  setInvitedUser,
+  setRoomId,
 } = appSlice.actions;
