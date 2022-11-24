@@ -1,4 +1,4 @@
-import {io, Socket} from "socket.io-client";
+import {io} from "socket.io-client";
 import {User} from "store/reducers/types/types";
 
 const URL = "http://localhost:5000";
@@ -30,6 +30,14 @@ export const API = {
 
   destroyConnection() {
     this.socket.off('disconnect');
+  },
+
+  inviteUser(user: User) {
+    this.socket.emit('invite-user', user)
+  },
+
+  userResponseSubscribe(accept: () => void) {
+    this.socket.on('invited', accept)
   }
 
 }

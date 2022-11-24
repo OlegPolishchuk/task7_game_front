@@ -5,6 +5,7 @@ export type InitialState = {
   isActive: boolean;
   availableUsers: User[];
   chosenUser: User;
+  inviteAccepted: boolean;
 }
 
 

@@ -9,6 +9,7 @@ const initialState: InitialState = {
   error: '',
   isLoading: false,
   isActive: false,
+  inviteAccepted: false,
 }
 
 const appSlice = createSlice({
@@ -24,11 +25,15 @@ const appSlice = createSlice({
     },
 
     setAvailableUsers: (state, action: PayloadAction<User[]>) => {
-      state.availableUsers = action.payload;
+      state.availableUsers = action.payload.filter(user => user.userId !== state.user.userId);
     },
 
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+    },
+
+    setChosenUser: (state, action: PayloadAction<User>) => {
+      state.chosenUser = action.payload;
     },
 
     updateUsersAdd: (state, action: PayloadAction<User>) => {
@@ -40,6 +45,13 @@ const appSlice = createSlice({
         .filter(user => user.userId !== action.payload.userId)
     },
 
+    setInviteAccepted: (state, action: PayloadAction<boolean>) => {
+      state.inviteAccepted = action.payload;
+    },
+
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    }
   },
 
   extraReducers: (builder => {
@@ -50,6 +62,9 @@ const appSlice = createSlice({
     builder.addCase(createConnection.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload as string;
+    })
+    builder.addCase(createConnection.fulfilled, (state) => {
+      state.isLoading = false
     })
   })
 
@@ -64,4 +79,7 @@ export const {
   setAvailableUsers,
   updateUsersRemove,
   updateUsersAdd,
+  setInviteAccepted,
+  setChosenUser,
+  setIsLoading,
 } = appSlice.actions;

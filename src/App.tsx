@@ -1,22 +1,40 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Autocomplete,
   Box,
   Container,
-  CssBaseline, List, ListItem, ListItemButton, ListItemText,
-  TextField,
-  Typography
+  CssBaseline, List,
+  ListItem, ListItemButton, ListItemText,
+  TextField
 } from "@mui/material";
 import {useAppDispatch, useAppSelector} from "hooks";
-import {selectAvailableUsers, selectChosenUser} from "store/selectors";
+import {selectAvailableUsers, selectChosenUser, selectUser} from "store/selectors";
 import {User} from "store/reducers/types/types";
 import {deactivateUser} from "store/reducers/actions/deactivateUser";
+import {AcceptModal} from "components/acceptModal/AcceptModal";
+import {UsersList} from "components";
+import {inviteUser} from "store/reducers/actions";
+import {setChosenUser} from "store/reducers/appSlice";
 
-function App() {
+export function App() {
   const dispatch = useAppDispatch();
 
+  const currentUser = useAppSelector(selectUser);
   const users = useAppSelector(selectAvailableUsers);
   const chosenUser = useAppSelector(selectChosenUser);
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleUserClick = (user: User) => {
+    dispatch(setChosenUser(user));
+
+    setShowModal(true);
+  }
+
+  const handleSendInvite = () => {
+    console.log(chosenUser)
+    dispatch(inviteUser(chosenUser))
+  }
 
   useEffect(() => {
     return () => {
@@ -36,7 +54,7 @@ function App() {
             sx={{ width: 300 }}
             getOptionLabel={(option: User) => option.username}
             renderInput={(params) => (
-              <TextField {...params} label="Movie" />
+              <TextField {...params}/>
             )}
           />
         </Box>
@@ -61,24 +79,26 @@ function App() {
             minWidth: '200px',
             overflowY: 'scroll',
           }}>
-            <List dense  sx={{width: '100%'}}>
 
-              {users.map(user => (
-                <ListItem key={user.userId} sx={{padding: '0'}}>
-                  <ListItemButton>
-                    <ListItemText>{user.username}</ListItemText>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-
-            </List>
+           <UsersList
+             users={users}
+             currentUser={currentUser}
+             userClickCallback={handleUserClick}
+           />
 
           </Box>
 
         </Box>
+
+        <AcceptModal
+          title={'Do you want to play with this user?'}
+          isOpen={showModal}
+          acceptCallback={handleSendInvite}
+          closeCallback={setShowModal}
+        />
+
       </Container>
     </>
   );
 }
 
-export default App;
