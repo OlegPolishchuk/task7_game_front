@@ -1,7 +1,12 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {User} from "store/reducers/types/types";
 import {API} from "api";
-import {setInviteAccepted, setIsLoading, setRoomId} from "store/reducers/appSlice";
+import {
+  setError,
+  setInviteAccepted,
+  setIsLoading,
+  setRoomId
+} from "store/reducers/appSlice";
 
 export const inviteUser = createAsyncThunk(
   'app/inviteUser',
@@ -9,6 +14,7 @@ export const inviteUser = createAsyncThunk(
 
     try {
       dispatch(setIsLoading(true));
+      dispatch(setError(''))
 
       API.inviteUser(user);
       API.userResponseSubscribe(
@@ -18,6 +24,12 @@ export const inviteUser = createAsyncThunk(
 
           API.joinRoom(currentUser.userId);
           dispatch(setRoomId(currentUser.userId))
+        },
+        () => {
+          console.log('invite canceled')
+          dispatch(setInviteAccepted(false))
+          dispatch(setIsLoading(false));
+          dispatch(setError('Your party has been rejected'))
         }
       );
 

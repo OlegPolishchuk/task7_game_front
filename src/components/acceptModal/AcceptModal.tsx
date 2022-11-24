@@ -11,7 +11,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import {User} from "store/reducers/types/types";
 import {useAppSelector} from "hooks";
-import {selectIsInviteAccepted, selectIsLoading} from "store/selectors";
+import {selectError, selectIsInviteAccepted, selectIsLoading} from "store/selectors";
 
 type Props = {
   title: string;
@@ -29,6 +29,7 @@ export const AcceptModal: FC<Props> = ({title
 
   const isLoading = useAppSelector(selectIsLoading);
   const isAccepted = useAppSelector(selectIsInviteAccepted);
+  const error = useAppSelector(selectError);
 
   const handleClose = () => {closeCallback(false)}
   const handleAccept = () => {acceptCallback()}
@@ -41,7 +42,7 @@ export const AcceptModal: FC<Props> = ({title
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title" sx={{paddingTop: '40px'}}>
-        {title}
+        {!error && title}
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -76,6 +77,13 @@ export const AcceptModal: FC<Props> = ({title
             </Box>
           </Box>
         )}
+
+        {error && (
+          <Typography variant={'h6'} sx={{color: 'error.main'} }>
+            {error}
+          </Typography>
+        )}
+
       </DialogContent>
 
       <DialogActions sx={{

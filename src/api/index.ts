@@ -10,7 +10,6 @@ export const API = {
     console.log('create connection')
     this.socket.auth = {username};
     this.socket.connect();
-
     this.socket.on('username-error', setLoginError)
   },
 
@@ -45,10 +44,16 @@ export const API = {
     this.socket.on('joined-to-room', joinToRoom)
   },
 
+  cancelInvite(invitedUser: User) {
+    this.socket.emit('invite-cancel', invitedUser)
+  },
+
   userResponseSubscribe(
     accept: () => void,
+    cancel: () => void,
   ) {
-    this.socket.on('invite-accepted', accept)
+    this.socket.on('invite-accepted', accept);
+    this.socket.on('invite-canceled', cancel);
   },
 
   joinRoom(userId: string) {

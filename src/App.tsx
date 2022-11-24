@@ -23,6 +23,8 @@ import {setChosenUser, setIsInvited} from "store/reducers/appSlice";
 import {API} from "api";
 import {acceptInvite} from "store/reducers/actions/acceptInvite";
 import {useNavigate} from "react-router-dom";
+import {cancelInvite} from "store/reducers/actions/cancelInvite";
+import {refreshInviteState} from "store/reducers/actions/refreshInviteState";
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -43,8 +45,13 @@ export function App() {
     setShowModal(true);
   }
 
+  const handleCloseModal = () => {
+    dispatch(refreshInviteState())
+    setShowModal(false)
+  }
+
   const handleCloseIsMeInvitedModal = () => {
-    dispatch(setIsInvited(false));
+    dispatch(cancelInvite(invitedUser));
   }
 
   const handleSendInvite = () => {
@@ -120,7 +127,7 @@ export function App() {
           title={'Do you want to play with this user?'}
           isOpen={showModal}
           acceptCallback={handleSendInvite}
-          closeCallback={setShowModal}
+          closeCallback={handleCloseModal}
         />
 
         <AcceptModal
