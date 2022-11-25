@@ -1,20 +1,14 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {API} from "api";
 import {
-  cleanWinner,
   setBoardState,
-  setCompetitor,
-  setCurrentUser,
+  setCurrentUser, setIsCompetitorLeft,
   setIsInvitedTryAgain,
   setIsMuTurn,
   setIsTryAgainAccepted,
-  setRedirectTo,
-  setShowInviteToRestartModal,
-  setSymbol
+  setShowInviteToRestartModal
 } from "store/reducers/gameReducer/gameSlice";
 import {User} from "store/reducers/appReducer/types/types";
-import {leaveRoom} from "store/reducers/gameReducer/actions/leaveRoom";
-import {setIsLoading} from "store/reducers/appReducer/appSlice";
 import {restartGame} from "store/reducers/gameReducer/actions/restartGame";
 
 export const joinGame = createAsyncThunk(
@@ -31,6 +25,9 @@ export const joinGame = createAsyncThunk(
       () => {
         dispatch(setIsTryAgainAccepted(true))
         dispatch(restartGame())
+      },
+      () => {
+        dispatch(setIsCompetitorLeft(true))
       }
     );
 

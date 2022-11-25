@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
-import {AcceptModal, BoardGame} from "components";
+import {AcceptModal, BoardGame, RedirectHint} from "components";
 import {calculateWinner} from "utils/calculateWinner";
 import {useAppDispatch, useAppSelector} from "hooks";
 import {
   selectBoardState,
   selectCompetitor,
-  selectError,
+  selectError, selectIsCompetitorLeft,
   selectIsGameLoading,
   selectIsInvitedTryAgain,
   selectIsMyTurn,
@@ -21,12 +21,14 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Box, Button, Container, LinearProgress, Typography} from "@mui/material";
 import {setWinner} from "store/reducers/gameReducer/gameSlice";
 import {leaveRoom} from "store/reducers/gameReducer/actions/leaveRoom";
-import {restartGame} from "store/reducers/gameReducer/actions/restartGame";
-import {useSelector} from "react-redux";
 import {
   inviteToRestartGame
 } from "store/reducers/gameReducer/actions/intiveToRestartGame";
 import {acceptRestartGame} from "store/reducers/gameReducer/actions/acceptRestartGame";
+
+
+const TIME_TO_REDIRECT = 5000;
+const TIMER_STEP = 1000;
 
 export const Game = () => {
   const dispatch = useAppDispatch();
@@ -41,10 +43,9 @@ export const Game = () => {
   const redirectTo = useAppSelector(selectRedirectTo);
   const isAccepted = useAppSelector(selectIsTryAgainAccepted);
   const error = useAppSelector(selectError);
-  const isInvitedTryAgain = useAppSelector(selectIsInvitedTryAgain);
-  const isTryAgainAccepted = useAppSelector(selectIsTryAgainAccepted);
   const isGameLoading = useAppSelector(selectIsGameLoading);
   const showInviteToRestartModal = useAppSelector(selectShowInviteToRestartModal);
+  const isCompetitorLeft = useAppSelector(selectIsCompetitorLeft);
 
   const {roomId} = useParams();
 
@@ -99,9 +100,24 @@ export const Game = () => {
         display: 'flex',
         justifyContent: 'flex-end'
       }}>
-        <Button variant={'text'} color={'secondary'}>Leave room</Button>
+        <Button
+          variant={'text'}
+          color={'secondary'}
+          onClick={handleLeaveRoom}
+        >
+          Leave room
+        </Button>
       </Box>
 
+      {isCompetitorLeft && (
+        <RedirectHint
+          competitor={competitor}
+          redirectUrl={'/'}
+          TIME_TO_REDIRECT={TIME_TO_REDIRECT}
+          TIMER_STEP={TIMER_STEP}
+          callback={handleLeaveRoom}
+        />
+      )}
       <Box>
         <Typography variant={'h3'} textAlign={'center'}>
           {currentUser.username}({mySymbol})
@@ -111,39 +127,40 @@ export const Game = () => {
           {competitor.username}({mySymbol === 'X' ? '0' : 'X'})
         </Typography>
 
-       <Box sx={{
-         display: 'flex',
-         flexDirection: 'column',
-         alignItems: 'center',
-         justifyContent: 'center',
-         mt: '30px',
-       }}>
-         <BoardGame
-           board={boardState}
-           isMyTurn={isMyTurn}
-           squareClickCallback={handleSquareClick}
-           wonIndexes={winnerIndexes as number[]}
-         />
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          mt: '30px',
+        }}>
+          <BoardGame
+            board={boardState}
+            isMyTurn={isMyTurn}
+            squareClickCallback={handleSquareClick}
+            wonIndexes={winnerIndexes as number[]}
+          />
 
-         {isGameLoading && (
-           <Box sx={{ width: '300px', mt: '30px' }}>
-             <LinearProgress />
-           </Box>
-         )}
+          {isGameLoading && (
+            <Box sx={{width: '300px', mt: '30px'}}>
+              <LinearProgress/>
+            </Box>
+          )}
 
-         {showTryAgainButton && (
-           <Box sx={{mt: '30px'}}>
-             <Button
-               variant={'contained'}
-               color={'error'}
-               onClick={handleInviteToRestartGame}
-             >
-               TRY AGAIN
-             </Button>
-           </Box>
-         )}
+          {showTryAgainButton && (
+            <Box sx={{mt: '30px'}}>
+              <Button
+                variant={'contained'}
+                color={'error'}
+                onClick={handleInviteToRestartGame}
+                disabled={isCompetitorLeft || showInviteToRestartModal || isGameLoading}
+              >
+                TRY AGAIN
+              </Button>
+            </Box>
+          )}
 
-       </Box>
+        </Box>
 
       </Box>
 
@@ -157,7 +174,6 @@ export const Game = () => {
         error={error}
         isLoading={false}
       />
-
 
 
     </Container>

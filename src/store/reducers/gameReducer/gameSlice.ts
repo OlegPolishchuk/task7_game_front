@@ -21,6 +21,7 @@ const initialState: InitialState = {
   isTryAgainAccepted: false,
   isInvitedTryAgain: false,
   showInviteToRestartModal: false,
+  isCompetitorLeft: false,
 };
 
 const gameSlice = createSlice({
@@ -70,6 +71,9 @@ const gameSlice = createSlice({
     },
     setShowInviteToRestartModal: (state, action: PayloadAction<boolean>) => {
       state.showInviteToRestartModal = action.payload;
+    },
+    setIsCompetitorLeft: (state, action: PayloadAction<boolean>) => {
+      state.isCompetitorLeft = action.payload;
     }
   },
 
@@ -97,4 +101,5 @@ export const {
   setIsTryAgainAccepted,
   setIsInvitedTryAgain,
   setShowInviteToRestartModal,
+  setIsCompetitorLeft,
 } = gameSlice.actions;

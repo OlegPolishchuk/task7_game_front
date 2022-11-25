@@ -3,8 +3,8 @@ import {
   cleanWinner,
   setBoardState,
   setCompetitor,
-  setCurrentUser,
-  setIsMuTurn, setRedirectTo,
+  setCurrentUser, setIsCompetitorLeft, setIsGameLoading,
+  setIsMuTurn, setRedirectTo, setShowInviteToRestartModal,
   setSymbol
 } from "store/reducers/gameReducer/gameSlice";
 import {API} from "api";
@@ -23,5 +23,8 @@ export const leaveRoom = createAsyncThunk(
     dispatch(setBoardState(Array(9).fill('')));
     dispatch(cleanWinner({username: '', userId: ''}));
     dispatch(setSymbol(''));
+    dispatch(setIsCompetitorLeft(false));
+    dispatch(setShowInviteToRestartModal(false));
+    dispatch(setIsGameLoading(false));
   }
 )

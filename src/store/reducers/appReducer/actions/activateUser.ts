@@ -8,6 +8,7 @@ import {
   updateUsersAdd, updateUsersRemove
 } from "store/reducers/appReducer/appSlice";
 import {User} from "store/reducers/appReducer/types/types";
+import {refreshInviteState} from "store/reducers/appReducer/actions/refreshInviteState";
 
 export const createConnection = createAsyncThunk(
   'app/activateUser',
@@ -33,13 +34,19 @@ export const createConnection = createAsyncThunk(
         },
         user => {
           dispatch(updateUsersRemove(user))
-        }
+        },
       )
 
       API.userInvitedSubscribe((user: User) => {
         console.log('userInvitedSubscribe by', user)
         dispatch(setInvitedUser(user));
         dispatch(setIsInvited(true));
+      })
+
+      API.handlePickedUpInvite((user) => {
+        dispatch(setInvitedUser({username: '', userId: ''}));
+        dispatch(setIsInvited(false))
+        // dispatch(refreshInviteState(user));
       })
 
     } catch (e) {

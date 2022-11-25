@@ -19,6 +19,7 @@ import {acceptInvite} from "store/reducers/appReducer/actions/acceptInvite";
 import {useNavigate} from "react-router-dom";
 import {cancelInvite} from "store/reducers/appReducer/actions/cancelInvite";
 import {refreshInviteState} from "store/reducers/appReducer/actions/refreshInviteState";
+import {pickUpInvite} from "store/reducers/appReducer/actions/pickUpInvite";
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -43,7 +44,7 @@ export function App() {
   }
 
   const handleCloseModal = () => {
-    dispatch(refreshInviteState())
+    dispatch(pickUpInvite({user: currentUser, competitor: chosenUser}))
     setShowModal(false)
   }
 

@@ -13,6 +13,7 @@ export type InitialState = {
   isTryAgainAccepted: boolean;
   isInvitedTryAgain: boolean;
   showInviteToRestartModal: boolean;
+  isCompetitorLeft: boolean;
 }
 
 export type SetStartGameDataArgs = {

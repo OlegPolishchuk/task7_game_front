@@ -6,7 +6,7 @@ const URL = "http://localhost:5000";
 export const API = {
   socket: io(URL, {autoConnect: false}),
 
-  createConnection(username: string, setLoginError: (error: {message: string}) => void ) {
+  createConnection(username: string, setLoginError: (error: { message: string }) => void) {
     console.log('create connection')
     this.socket.auth = {username};
     this.socket.connect();
@@ -20,8 +20,7 @@ export const API = {
   usersDataSubscribe(
     getUsers: (users: User[]) => void,
     updateUsersAdd: (user: User) => void,
-    updateUserRemove: (user: User) => void)
-  {
+    updateUserRemove: (user: User) => void) {
     this.socket.on('users', getUsers);
     this.socket.on('new-user-connected', updateUsersAdd);
     this.socket.on('user-disconnected', updateUserRemove);
@@ -33,6 +32,14 @@ export const API = {
 
   inviteUser(user: User) {
     this.socket.emit('invite-user', user)
+  },
+
+  pickUpInvite({user, competitor}: {user: User, competitor: User}) {
+    this.socket.emit('pick-up-invite', {user, competitor})
+  },
+
+  handlePickedUpInvite(pickedUpInvite: (user: User) => void) {
+    this.socket.on('picked-up-invite', pickedUpInvite)
   },
 
   userInvitedSubscribe(getInvited: (user: User) => void) {
@@ -56,13 +63,16 @@ export const API = {
   },
 
   joinToGame(
-    {user, roomId}: {user: User, roomId: string},
+    {user, roomId}: { user: User, roomId: string },
     requestToInvite: () => void,
-    inviteToRestartAccepted: () => void
+    inviteToRestartAccepted: () => void,
+    handleUserLeft: () => void,
   ) {
     this.socket.emit('join-to-game', {user, roomId})
-    this.socket.on('invited-to-restart-game',requestToInvite )
+    this.socket.on('invited-to-restart-game', requestToInvite)
     this.socket.on('invite-to-restart-accepted', inviteToRestartAccepted)
+    this.socket.on('user-left-game', handleUserLeft)
+    this.socket.on('user-disconnected', handleUserLeft)
   },
 
 

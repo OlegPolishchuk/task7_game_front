@@ -18,3 +18,4 @@ export {selectIsTryAgainAccepted} from './selectIsTryAgainAccepted/selectIsTryAg
 export {selectIsInvitedTryAgain} from './selectIsInvitedTryAgain/selectIsInvitedTryAgain';
 export {selectIsGameLoading} from './selectIsGameLoading/selectIsGameLoading';
 export {selectShowInviteToRestartModal} from './selectShowInviteToRestartModal/selectShowInviteToRestartModal';
+export {selectIsCompetitorLeft} from './selectIsCompetitorLeft/selectIsCompetitorLeft';
