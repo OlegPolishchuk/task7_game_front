@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {setChosenUser, setError, setInvitedUser} from "store/reducers/appSlice";
+import {setChosenUser, setError, setInvitedUser} from "store/reducers/appReducer/appSlice";
 
 export const refreshInviteState = createAsyncThunk(
   'app/refreshInviteState',

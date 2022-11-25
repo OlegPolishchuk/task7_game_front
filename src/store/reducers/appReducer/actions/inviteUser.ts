@@ -1,12 +1,13 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {User} from "store/reducers/types/types";
+import {User} from "store/reducers/appReducer/types/types";
 import {API} from "api";
 import {
   setError,
   setInviteAccepted,
   setIsLoading,
   setRoomId
-} from "store/reducers/appSlice";
+} from "store/reducers/appReducer/appSlice";
+import {setStartGameData} from "store/reducers/gameReducer/actions/setStartGameData";
 
 export const inviteUser = createAsyncThunk(
   'app/inviteUser',
@@ -22,8 +23,13 @@ export const inviteUser = createAsyncThunk(
           dispatch(setInviteAccepted(true))
           dispatch(setIsLoading(false));
 
-          API.joinRoom(currentUser.userId);
-          dispatch(setRoomId(currentUser.userId))
+          dispatch(setStartGameData({
+            competitor: user,
+            symbol: 'X',
+            isMyTurn: true}
+          ))
+
+          dispatch(setRoomId(`${currentUser.username}-${currentUser.userId}`))
         },
         () => {
           console.log('invite canceled')

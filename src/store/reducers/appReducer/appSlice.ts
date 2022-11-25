@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {InitialState, User} from "store/reducers/types/types";
-import {createConnection} from "store/reducers/actions";
+import {InitialState, User} from "store/reducers/appReducer/types/types";
+import {createConnection} from "store/reducers/appReducer/actions";
 
 const initialState: InitialState = {
   user: { username: '',userId: '' },

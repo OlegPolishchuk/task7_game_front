@@ -6,8 +6,8 @@ import {
   setIsActive, setIsInvited,
   setUser,
   updateUsersAdd, updateUsersRemove
-} from "store/reducers/appSlice";
-import {User} from "store/reducers/types/types";
+} from "store/reducers/appReducer/appSlice";
+import {User} from "store/reducers/appReducer/types/types";
 
 export const createConnection = createAsyncThunk(
   'app/activateUser',

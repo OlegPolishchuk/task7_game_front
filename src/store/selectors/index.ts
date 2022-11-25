@@ -8,3 +8,10 @@ export {selectIsInviteAccepted} from './selectIsInviteAccepted/selectIsInviteAcc
 export {selectIsMeInvited} from './selectIsMeInvited/selectIsMeInvited';
 export {selectInvitedUser} from './selectInvitedUser/selectInvitedUser';
 export {selectRoomId} from './selectRoomId/selectRoomId';
+export {selectCompetitor} from './selectCompetitor/selectCompetitor';
+export {selectIsMyTurn} from './selectIsMyTurn/selectIsMyTurn';
+export {selectMySymbol} from './selectMySymbol/selectMySymbol';
+export {selectBoardState} from './selectBoardState/selectBoardState';
+export {selectWinner} from './selectWinner/selectWinner';
+export {selectRedirectTo} from './selectRedirectTo/selectRedirectTo';
+export {selectIsTryAgainAccepted} from './selectIsTryAgainAccepted/selectIsTryAgainAccepted';

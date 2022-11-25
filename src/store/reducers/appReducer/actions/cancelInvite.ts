@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {setChosenUser, setIsInvited} from "store/reducers/appSlice";
-import {User} from "store/reducers/types/types";
+import {setChosenUser, setIsInvited} from "store/reducers/appReducer/appSlice";
+import {User} from "store/reducers/appReducer/types/types";
 import {API} from "api";
 
 export const cancelInvite = createAsyncThunk(

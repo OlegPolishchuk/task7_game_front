@@ -1,5 +1,5 @@
 import {io} from "socket.io-client";
-import {User} from "store/reducers/types/types";
+import {User} from "store/reducers/appReducer/types/types";
 
 const URL = "http://localhost:5000";
 
@@ -39,9 +39,8 @@ export const API = {
     this.socket.on('me-invited', getInvited)
   },
 
-  acceptInvite(fromUser: User, joinToRoom: (roomId: string) => void) {
+  acceptInvite(fromUser: User) {
     this.socket.emit('invite-accept', fromUser);
-    this.socket.on('joined-to-room', joinToRoom)
   },
 
   cancelInvite(invitedUser: User) {
@@ -56,8 +55,28 @@ export const API = {
     this.socket.on('invite-canceled', cancel);
   },
 
-  joinRoom(userId: string) {
-    this.socket.emit('join-room', userId)
-  }
+  joinToGame(
+    {user, roomId}: {user: User, roomId: string},
+  ) {
+    this.socket.emit('join-to-game', {user, roomId})
+  },
 
+
+  makeMove(
+    newBoardState: string[],
+  ) {
+    this.socket.emit('make-move', newBoardState);
+  },
+
+  waitMyTurn(myTurn: (newBoardState: string[]) => void) {
+    this.socket.on('your-turn', myTurn)
+  },
+
+  leaveGame(user: User) {
+    this.socket.emit('leave-game', user)
+  },
+
+  inviteToRestartGame() {
+    this.socket.emit('restart-game')
+  }
 }

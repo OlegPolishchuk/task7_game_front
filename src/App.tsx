@@ -1,30 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Autocomplete,
-  Box,
-  Container,
-  CssBaseline, List,
-  ListItem, ListItemButton, ListItemText,
-  TextField
-} from "@mui/material";
+import {Autocomplete, Box, Container, CssBaseline, TextField} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "hooks";
 import {
   selectAvailableUsers,
-  selectChosenUser, selectInvitedUser,
-  selectIsMeInvited, selectRoomId,
+  selectChosenUser, selectError,
+  selectInvitedUser, selectIsInviteAccepted, selectIsLoading,
+  selectIsMeInvited,
+  selectRoomId,
   selectUser
 } from "store/selectors";
-import {User} from "store/reducers/types/types";
-import {deactivateUser} from "store/reducers/actions/deactivateUser";
+import {User} from "store/reducers/appReducer/types/types";
+import {deactivateUser} from "store/reducers/appReducer/actions/deactivateUser";
 import {AcceptModal} from "components/acceptModal/AcceptModal";
 import {UsersList} from "components";
-import {inviteUser} from "store/reducers/actions";
-import {setChosenUser, setIsInvited} from "store/reducers/appSlice";
-import {API} from "api";
-import {acceptInvite} from "store/reducers/actions/acceptInvite";
+import {inviteUser} from "store/reducers/appReducer/actions";
+import {setChosenUser} from "store/reducers/appReducer/appSlice";
+import {acceptInvite} from "store/reducers/appReducer/actions/acceptInvite";
 import {useNavigate} from "react-router-dom";
-import {cancelInvite} from "store/reducers/actions/cancelInvite";
-import {refreshInviteState} from "store/reducers/actions/refreshInviteState";
+import {cancelInvite} from "store/reducers/appReducer/actions/cancelInvite";
+import {refreshInviteState} from "store/reducers/appReducer/actions/refreshInviteState";
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -36,6 +30,9 @@ export function App() {
   const isMeInvited = useAppSelector(selectIsMeInvited);
   const invitedUser = useAppSelector(selectInvitedUser);
   const roomId = useAppSelector(selectRoomId);
+  const isLoading = useAppSelector(selectIsLoading);
+  const isAccepted = useAppSelector(selectIsInviteAccepted);
+  const error = useAppSelector(selectError);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -55,7 +52,6 @@ export function App() {
   }
 
   const handleSendInvite = () => {
-    console.log(chosenUser)
     dispatch(inviteUser({user: chosenUser, currentUser}))
   }
 
@@ -128,6 +124,10 @@ export function App() {
           isOpen={showModal}
           acceptCallback={handleSendInvite}
           closeCallback={handleCloseModal}
+          acceptButtonTitle={'Invite'}
+          isLoading={isLoading}
+          error={error}
+          isAccepted={isAccepted}
         />
 
         <AcceptModal
@@ -135,6 +135,10 @@ export function App() {
           isOpen={isMeInvited}
           acceptCallback={handleJoinToParty}
           closeCallback={handleCloseIsMeInvitedModal}
+          acceptButtonTitle={'Accept'}
+          isLoading={isLoading}
+          error={error}
+          isAccepted={isAccepted}
           />
 
       </Container>

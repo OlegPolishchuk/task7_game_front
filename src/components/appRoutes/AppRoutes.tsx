@@ -5,7 +5,7 @@ import {useAppSelector} from "hooks/useAppSelector";
 import {selectIsActive} from "store/selectors";
 import {App} from "App";
 import {ProtectedRoute} from "components/protectedRoute/ProtectedRoute";
-import {Board} from "pages/Board";
+import {Game} from "pages/Game";
 
 export const AppRoutes = () => {
   const isActive = useAppSelector(selectIsActive);
@@ -14,7 +14,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route path={'/'} element={ <ProtectedRoute children={<App />} />}/>
       <Route path={'/login'} element={<Login />}/>
-      <Route path={'/room/:roomId'} element={<ProtectedRoute children={<Board />} />}/>
+      <Route path={'/room/:roomId'} element={<ProtectedRoute children={<Game />} />}/>
       <Route path={'*'} element={<div>Not found</div>} />
     </Routes>
   );

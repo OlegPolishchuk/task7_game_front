@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Box, List, ListItem, ListItemButton, ListItemText} from "@mui/material";
-import {User} from "store/reducers/types/types";
+import {User} from "store/reducers/appReducer/types/types";
 
 type Props = {
   currentUser: User;

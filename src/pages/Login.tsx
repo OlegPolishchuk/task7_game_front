@@ -4,8 +4,8 @@ import {Box, Button, Container, TextField} from "@mui/material";
 import {useAppSelector} from "hooks/useAppSelector";
 import {selectError, selectIsActive} from "store/selectors";
 import {useAppDispatch} from "hooks/useAppDispatch";
-import {setError} from "store/reducers/appSlice";
-import {createConnection} from "store/reducers/actions/activateUser";
+import {setError} from "store/reducers/appReducer/appSlice";
+import {createConnection} from "store/reducers/appReducer/actions/activateUser";
 import {useNavigate} from "react-router-dom";
 
 export const Login = () => {

@@ -1,15 +1,17 @@
 import React, {FC} from 'react';
 import {
   Box,
-  Button, CircularProgress,
+  Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle, IconButton, Typography
+  DialogTitle,
+  IconButton,
+  Typography
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import {User} from "store/reducers/types/types";
+import {User} from "store/reducers/appReducer/types/types";
 import {useAppSelector} from "hooks";
 import {selectError, selectIsInviteAccepted, selectIsLoading} from "store/selectors";
 
@@ -19,20 +21,30 @@ type Props = {
   acceptCallback: () => void;
   closeCallback: (showModal: boolean) => void;
   user?: User;
+  acceptButtonTitle: string;
+  error: string;
+  isLoading: boolean;
+  isAccepted: boolean;
 }
 
-export const AcceptModal: FC<Props> = ({title
-                                         ,acceptCallback,
+export const AcceptModal: FC<Props> = ({
+                                         title
+                                         , acceptCallback,
                                          closeCallback,
                                          isOpen,
+                                         acceptButtonTitle,
+                                         isAccepted,
+                                         error,
+                                         isLoading
                                        }) => {
 
-  const isLoading = useAppSelector(selectIsLoading);
-  const isAccepted = useAppSelector(selectIsInviteAccepted);
-  const error = useAppSelector(selectError);
 
-  const handleClose = () => {closeCallback(false)}
-  const handleAccept = () => {acceptCallback()}
+  const handleClose = () => {
+    closeCallback(false)
+  }
+  const handleAccept = () => {
+    acceptCallback()
+  }
 
   return (
     <Dialog
@@ -53,7 +65,7 @@ export const AcceptModal: FC<Props> = ({title
             color: 'red',
           }}
         >
-          <CloseIcon />
+          <CloseIcon/>
         </IconButton>
       </DialogTitle>
 
@@ -65,7 +77,7 @@ export const AcceptModal: FC<Props> = ({title
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-            <CircularProgress color="success" />
+            <CircularProgress color="success"/>
             <Box sx={{
               fontSize: '14px',
               fontStyle: 'italic',
@@ -79,7 +91,7 @@ export const AcceptModal: FC<Props> = ({title
         )}
 
         {error && (
-          <Typography variant={'h6'} sx={{color: 'error.main'} }>
+          <Typography variant={'h6'} sx={{color: 'error.main'}}>
             {error}
           </Typography>
         )}
@@ -98,7 +110,7 @@ export const AcceptModal: FC<Props> = ({title
           autoFocus
           disabled={isLoading && !isAccepted}
         >
-          Confirm
+          {acceptButtonTitle}
         </Button>
       </DialogActions>
     </Dialog>
