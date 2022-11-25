@@ -22,7 +22,6 @@ export const GameSquare: FC<Props> = (
 ) => {
   const winner = useAppSelector(selectWinner);
   const mySymbol = useAppSelector(selectMySymbol);
-  console.log(`index=${index}, color=${color}`)
 
   const handleClick = () => {
     clickCallback(index)

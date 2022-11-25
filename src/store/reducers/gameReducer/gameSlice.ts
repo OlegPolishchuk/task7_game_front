@@ -19,6 +19,8 @@ const initialState: InitialState = {
   winnerIndexes: [],
   redirectTo: null,
   isTryAgainAccepted: false,
+  isInvitedTryAgain: false,
+  showInviteToRestartModal: false,
 };
 
 const gameSlice = createSlice({
@@ -27,6 +29,9 @@ const gameSlice = createSlice({
   reducers: {
     setCurrentUser: (state, action: PayloadAction<User>) => {
       state.currentUser = action.payload;
+    },
+    setIsGameLoading: (state, action: PayloadAction<boolean>) => {
+      state.isGameLoading = action.payload;
     },
     setCompetitor: (state, action: PayloadAction<User>) => {
       state.competitor = action.payload;
@@ -59,6 +64,12 @@ const gameSlice = createSlice({
     },
     setIsTryAgainAccepted: (state, action: PayloadAction<boolean>) => {
       state.isTryAgainAccepted = action.payload;
+    },
+    setIsInvitedTryAgain: (state, action: PayloadAction<boolean>) => {
+      state.isInvitedTryAgain = action.payload;
+    },
+    setShowInviteToRestartModal: (state, action: PayloadAction<boolean>) => {
+      state.showInviteToRestartModal = action.payload;
     }
   },
 
@@ -76,6 +87,7 @@ export const gameReducer = gameSlice.reducer;
 export const {
   setCurrentUser,
   setCompetitor,
+  setIsGameLoading,
   setIsMuTurn,
   setBoardState,
   setWinner,
@@ -83,4 +95,6 @@ export const {
   setSymbol,
   setRedirectTo,
   setIsTryAgainAccepted,
+  setIsInvitedTryAgain,
+  setShowInviteToRestartModal,
 } = gameSlice.actions;

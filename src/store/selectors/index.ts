@@ -15,3 +15,6 @@ export {selectBoardState} from './selectBoardState/selectBoardState';
 export {selectWinner} from './selectWinner/selectWinner';
 export {selectRedirectTo} from './selectRedirectTo/selectRedirectTo';
 export {selectIsTryAgainAccepted} from './selectIsTryAgainAccepted/selectIsTryAgainAccepted';
+export {selectIsInvitedTryAgain} from './selectIsInvitedTryAgain/selectIsInvitedTryAgain';
+export {selectIsGameLoading} from './selectIsGameLoading/selectIsGameLoading';
+export {selectShowInviteToRestartModal} from './selectShowInviteToRestartModal/selectShowInviteToRestartModal';

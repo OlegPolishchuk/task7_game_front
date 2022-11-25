@@ -4,20 +4,30 @@ import {calculateWinner} from "utils/calculateWinner";
 import {useAppDispatch, useAppSelector} from "hooks";
 import {
   selectBoardState,
-  selectCompetitor, selectError, selectIsLoading,
-  selectIsMyTurn, selectIsTryAgainAccepted,
+  selectCompetitor,
+  selectError,
+  selectIsGameLoading,
+  selectIsInvitedTryAgain,
+  selectIsLoading,
+  selectIsMyTurn,
+  selectIsTryAgainAccepted,
   selectMySymbol,
-  selectRedirectTo,
+  selectRedirectTo, selectShowInviteToRestartModal,
   selectUser,
   selectWinner
 } from "store/selectors";
 import {makeMove} from "store/reducers/gameReducer/actions/makeMove";
 import {joinGame} from "store/reducers/gameReducer/actions/joinGame";
 import {useNavigate, useParams} from "react-router-dom";
-import {Box, Button, Container, Typography} from "@mui/material";
+import {Box, Button, Container, LinearProgress, Typography} from "@mui/material";
 import {setWinner} from "store/reducers/gameReducer/gameSlice";
 import {leaveRoom} from "store/reducers/gameReducer/actions/leaveRoom";
 import {restartGame} from "store/reducers/gameReducer/actions/restartGame";
+import {useSelector} from "react-redux";
+import {
+  inviteToRestartGame
+} from "store/reducers/gameReducer/actions/intiveToRestartGame";
+import {acceptRestartGame} from "store/reducers/gameReducer/actions/acceptRestartGame";
 
 export const Game = () => {
   const dispatch = useAppDispatch();
@@ -31,9 +41,14 @@ export const Game = () => {
   const winner = useAppSelector(selectWinner);
   const redirectTo = useAppSelector(selectRedirectTo);
   const isAccepted = useAppSelector(selectIsTryAgainAccepted);
-  const isLoading = useAppSelector(selectIsLoading);
   const error = useAppSelector(selectError);
+  const isInvitedTryAgain = useAppSelector(selectIsInvitedTryAgain);
+  const isTryAgainAccepted = useAppSelector(selectIsTryAgainAccepted);
+  const isGameLoading = useAppSelector(selectIsGameLoading);
+  const showInviteToRestartModal = useAppSelector(selectShowInviteToRestartModal);
 
+  console.log(`isInvitedTryAgain`, isInvitedTryAgain)
+  console.log('isTryAgainAccepted', isTryAgainAccepted)
 
   const {roomId} = useParams();
 
@@ -50,7 +65,11 @@ export const Game = () => {
   }
 
   const handleReloadGame = () => {
-    dispatch(restartGame())
+    dispatch(acceptRestartGame())
+  }
+
+  const handleInviteToRestartGame = () => {
+    dispatch(inviteToRestartGame());
   }
 
   const handleLeaveRoom = () => {
@@ -108,12 +127,18 @@ export const Game = () => {
            wonIndexes={winnerIndexes as number[]}
          />
 
+         {isGameLoading && (
+           <Box sx={{ width: '300px', mt: '30px' }}>
+             <LinearProgress />
+           </Box>
+         )}
+
          {winner.userId && (
            <Box sx={{mt: '30px'}}>
              <Button
                variant={'contained'}
                color={'error'}
-               onClick={handleReloadGame}
+               onClick={handleInviteToRestartGame}
              >
                TRY AGAIN
              </Button>
@@ -125,14 +150,14 @@ export const Game = () => {
       </Box>
 
       <AcceptModal
-        title={`The winner is ${winner.username} !!!`}
-        isOpen={false}
+        title={'Would you like to try again?'}
+        isOpen={showInviteToRestartModal}
         acceptCallback={handleReloadGame}
         closeCallback={handleLeaveRoom}
         acceptButtonTitle={'Try again'}
         isAccepted={isAccepted}
         error={error}
-        isLoading={isLoading}
+        isLoading={false}
       />
 
 

@@ -11,6 +11,8 @@ export type InitialState = {
   winnerIndexes: number[];
   redirectTo: string | null;
   isTryAgainAccepted: boolean;
+  isInvitedTryAgain: boolean;
+  showInviteToRestartModal: boolean;
 }
 
 export type SetStartGameDataArgs = {

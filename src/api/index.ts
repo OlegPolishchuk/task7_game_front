@@ -57,8 +57,12 @@ export const API = {
 
   joinToGame(
     {user, roomId}: {user: User, roomId: string},
+    requestToInvite: () => void,
+    inviteToRestartAccepted: () => void
   ) {
     this.socket.emit('join-to-game', {user, roomId})
+    this.socket.on('invited-to-restart-game',requestToInvite )
+    this.socket.on('invite-to-restart-accepted', inviteToRestartAccepted)
   },
 
 
@@ -78,5 +82,9 @@ export const API = {
 
   inviteToRestartGame() {
     this.socket.emit('restart-game')
+  },
+
+  acceptToRestart() {
+    this.socket.emit('accept-to-restart')
   }
 }
