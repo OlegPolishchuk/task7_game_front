@@ -8,7 +8,6 @@ import {
   selectError,
   selectIsGameLoading,
   selectIsInvitedTryAgain,
-  selectIsLoading,
   selectIsMyTurn,
   selectIsTryAgainAccepted,
   selectMySymbol,
@@ -47,13 +46,12 @@ export const Game = () => {
   const isGameLoading = useAppSelector(selectIsGameLoading);
   const showInviteToRestartModal = useAppSelector(selectShowInviteToRestartModal);
 
-  console.log(`isInvitedTryAgain`, isInvitedTryAgain)
-  console.log('isTryAgainAccepted', isTryAgainAccepted)
-
   const {roomId} = useParams();
 
   const {winnerSymbol, winnerIndexes} = calculateWinner(boardState);
-
+  const isDraw = !winner.userId && !boardState.includes('');
+  const showTryAgainButton = winner.userId ? true : isDraw;
+  console.log('isDraw', isDraw)
   const handleSquareClick = (index: number) => {
     dispatch(makeMove(
       {
@@ -133,7 +131,7 @@ export const Game = () => {
            </Box>
          )}
 
-         {winner.userId && (
+         {showTryAgainButton && (
            <Box sx={{mt: '30px'}}>
              <Button
                variant={'contained'}
