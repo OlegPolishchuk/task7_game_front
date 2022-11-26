@@ -1,5 +1,12 @@
 import React, {FC} from 'react';
-import {Box, List, ListItem, ListItemButton, ListItemText} from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Typography
+} from "@mui/material";
 import {User} from "store/reducers/appReducer/types/types";
 
 type Props = {
@@ -13,15 +20,17 @@ export const UsersList: FC<Props> = ({users, currentUser, userClickCallback}) =>
   const handleUserClick = (user: User) => {
     userClickCallback(user);
   }
-
+  console.log(users)
   return (
     <List dense  sx={{width: '100%', padding: '0'}}>
 
-      <ListItem  sx={{padding: '0 10px', background: '#F1F1F1'}}>
+      <ListItem  sx={{
+        padding: '10px',
+        boxShadow: 2,
+        background: 'rgb(245, 246, 247)',
+      }}>
         <ListItemText>
-          <Box sx={{
-            fontWeight: 'bold',
-          }}>
+          <Box>
             {currentUser.username}(yourself)
           </Box>
         </ListItemText>
@@ -33,8 +42,21 @@ export const UsersList: FC<Props> = ({users, currentUser, userClickCallback}) =>
           sx={{padding: '0'}}
           onClick={() => handleUserClick(user)}
         >
-          <ListItemButton>
-            <ListItemText>{user.username}</ListItemText>
+          <ListItemButton
+            sx={{
+            padding: '10px',
+            boxShadow: 2,
+          }}
+            disabled={user.isInGame}
+          >
+            <ListItemText>
+              {user.username}
+              {user.isInGame && (
+                <Typography variant={'subtitle1'} color={'error.main'}>
+                    in game
+                </Typography>
+              )}
+            </ListItemText>
           </ListItemButton>
         </ListItem>
       ))}

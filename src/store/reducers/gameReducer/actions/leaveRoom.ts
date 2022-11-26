@@ -17,11 +17,11 @@ export const leaveRoom = createAsyncThunk(
 
     dispatch(refreshAppState());
 
-    dispatch(setCurrentUser({username: '', userId: ''}));
-    dispatch(setCompetitor({username: '', userId: ''}));
+    dispatch(setCurrentUser({username: '', userId: '', isInGame: false}));
+    dispatch(setCompetitor({username: '', userId: '', isInGame: false}));
     dispatch(setIsMuTurn(false));
     dispatch(setBoardState(Array(9).fill('')));
-    dispatch(cleanWinner({username: '', userId: ''}));
+    dispatch(cleanWinner({username: '', userId: '', isInGame: false}));
     dispatch(setSymbol(''));
     dispatch(setIsCompetitorLeft(false));
     dispatch(setShowInviteToRestartModal(false));

@@ -10,11 +10,13 @@ import {
 } from "store/reducers/gameReducer/gameSlice";
 import {User} from "store/reducers/appReducer/types/types";
 import {restartGame} from "store/reducers/gameReducer/actions/restartGame";
+import {setIsUserInGame, updateAvailableUsers} from "store/reducers/appReducer/appSlice";
 
 export const joinGame = createAsyncThunk(
   'game/answerSubscribe', ({user, roomId}: {user: User, roomId: string}, {dispatch}) => {
 
     dispatch(setCurrentUser(user));
+    dispatch(setIsUserInGame(true))
 
     API.joinToGame(
       {user, roomId},
@@ -28,7 +30,7 @@ export const joinGame = createAsyncThunk(
       },
       () => {
         dispatch(setIsCompetitorLeft(true))
-      }
+      },
     );
 
     API.waitMyTurn((newBoardState) => {

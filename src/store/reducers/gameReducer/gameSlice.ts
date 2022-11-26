@@ -9,13 +9,13 @@ import {setStartGameData} from "store/reducers/gameReducer/actions/setStartGameD
 import {leaveRoom} from "store/reducers/gameReducer/actions/leaveRoom";
 
 const initialState: InitialState = {
-  competitor: {username: '', userId: ''},
-  currentUser: {username: '', userId: ''},
+  competitor: {username: '', userId: '', isInGame: false},
+  currentUser: {username: '', userId: '', isInGame: false},
   isGameLoading: false,
   symbol: '',
   isMyTurn: false,
   boardState: Array(9).fill(''),
-  winner: {username: '', userId: ''},
+  winner: {username: '', userId: '', isInGame: false},
   winnerIndexes: [],
   redirectTo: null,
   isTryAgainAccepted: false,

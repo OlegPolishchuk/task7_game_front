@@ -5,13 +5,14 @@ import {useAppDispatch, useAppSelector} from "hooks";
 import {
   selectBoardState,
   selectCompetitor,
-  selectError, selectIsCompetitorLeft,
+  selectError,
+  selectIsCompetitorLeft,
   selectIsGameLoading,
-  selectIsInvitedTryAgain,
   selectIsMyTurn,
   selectIsTryAgainAccepted,
   selectMySymbol,
-  selectRedirectTo, selectShowInviteToRestartModal,
+  selectRedirectTo,
+  selectShowInviteToRestartModal,
   selectUser,
   selectWinner
 } from "store/selectors";
@@ -52,7 +53,7 @@ export const Game = () => {
   const {winnerSymbol, winnerIndexes} = calculateWinner(boardState);
   const isDraw = !winner.userId && !boardState.includes('');
   const showTryAgainButton = winner.userId ? true : isDraw;
-  console.log('isDraw', isDraw)
+
   const handleSquareClick = (index: number) => {
     dispatch(makeMove(
       {

@@ -8,11 +8,11 @@ import {
 
 export const refreshAppState = createAsyncThunk(
   'app/refreshState', (_, {dispatch}) => {
-    dispatch(setChosenUser({ username: '',userId: '' }));
+    dispatch(setChosenUser({ username: '',userId: '', isInGame: false }));
     dispatch(setError(''));
     dispatch(setInviteAccepted(false));
     dispatch(setIsInvited(false));
-    dispatch(setInvitedUser({ username: '',userId: '' }));
+    dispatch(setInvitedUser({ username: '',userId: '', isInGame: false }));
     dispatch(setRoomId(''));
   }
 )

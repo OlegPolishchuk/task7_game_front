@@ -16,6 +16,6 @@ export const restartGame = createAsyncThunk(
     dispatch(setShowInviteToRestartModal(false))
     dispatch(setIsGameLoading(false))
     dispatch(setBoardState(Array(9).fill('')));
-    dispatch(cleanWinner({username: '', userId: ''}));
+    dispatch(cleanWinner({username: '', userId: '', isInGame: false}));
   }
 )

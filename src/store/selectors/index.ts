@@ -19,3 +19,4 @@ export {selectIsInvitedTryAgain} from './selectIsInvitedTryAgain/selectIsInvited
 export {selectIsGameLoading} from './selectIsGameLoading/selectIsGameLoading';
 export {selectShowInviteToRestartModal} from './selectShowInviteToRestartModal/selectShowInviteToRestartModal';
 export {selectIsCompetitorLeft} from './selectIsCompetitorLeft/selectIsCompetitorLeft';
+export {selectMessages} from './selectMessages/selectMessages';

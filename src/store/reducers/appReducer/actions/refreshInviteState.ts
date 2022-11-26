@@ -11,9 +11,9 @@ export const refreshInviteState = createAsyncThunk(
   (_, {dispatch}) => {
 
 
-    dispatch(setChosenUser({username: '', userId: ''}));
+    dispatch(setChosenUser({username: '', userId: '', isInGame: false}));
     dispatch(setError(''));
     dispatch(setIsLoading(false));
-    dispatch(setInvitedUser({username: '', userId: ''}))
+    dispatch(setInvitedUser({username: '', userId: '', isInGame: false}))
   }
 )

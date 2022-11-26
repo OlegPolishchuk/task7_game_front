@@ -9,10 +9,17 @@ export type InitialState = {
   isInvited: boolean;
   invitedUser: User;
   roomId: string;
+  messages: Message[];
 }
 
 
 export type User = {
   username: string;
   userId: string;
+  isInGame: boolean;
+}
+
+export type Message = {
+  message: string;
+  user: User;
 }

@@ -1,18 +1,19 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {InitialState, User} from "store/reducers/appReducer/types/types";
+import {InitialState, Message, User} from "store/reducers/appReducer/types/types";
 import {createConnection} from "store/reducers/appReducer/actions";
 
 const initialState: InitialState = {
-  user: { username: '',userId: '' },
-  chosenUser: { username: '',userId: '' },
+  user: { username: '',userId: '', isInGame: false },
+  chosenUser: { username: '',userId: '', isInGame: false },
   availableUsers: [],
   error: '',
   isLoading: false,
   isActive: false,
   inviteAccepted: false,
   isInvited: false,
-  invitedUser: { username: '', userId: ''},
+  invitedUser: { username: '', userId: '', isInGame: false },
   roomId: '',
+  messages: [],
 }
 
 const appSlice = createSlice({
@@ -66,6 +67,20 @@ const appSlice = createSlice({
 
     setRoomId: (state, action: PayloadAction<string>) => {
       state.roomId = action.payload;
+    },
+
+    setMessages: (state, action: PayloadAction<Message>) => {
+      state.messages.push(action.payload);
+    },
+
+    setIsUserInGame: (state, action: PayloadAction<boolean>) => {
+      state.user = {...state.user, isInGame: action.payload};
+    },
+    updateAvailableUsers: (state, action: PayloadAction<User>) => {
+      state.availableUsers = state.availableUsers.map(user => {
+        const updatedUser = action.payload;
+        return user.userId === updatedUser.userId ? updatedUser : user
+      })
     }
   },
 
@@ -100,4 +115,7 @@ export const {
   setIsInvited,
   setInvitedUser,
   setRoomId,
+  setMessages,
+  setIsUserInGame,
+  updateAvailableUsers,
 } = appSlice.actions;

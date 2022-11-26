@@ -20,10 +20,21 @@ export const API = {
   usersDataSubscribe(
     getUsers: (users: User[]) => void,
     updateUsersAdd: (user: User) => void,
-    updateUserRemove: (user: User) => void) {
+    updateUserRemove: (user: User) => void,
+    refreshMessages: ({message, user}: {message: string, user: User}) => void,
+    handleUserInGame: (user: User) => void,
+    handleUserIsFree: (user: User) => void,
+    ) {
     this.socket.on('users', getUsers);
     this.socket.on('new-user-connected', updateUsersAdd);
     this.socket.on('user-disconnected', updateUserRemove);
+    this.socket.on('refresh-messages', refreshMessages);
+    this.socket.on('user-joined-to-game', handleUserInGame)
+    this.socket.on('user-in-free', handleUserIsFree)
+  },
+
+  sendMessage(message: string, user: User) {
+    this.socket.emit('message', {message, user})
   },
 
   destroyConnection() {
@@ -66,9 +77,9 @@ export const API = {
     {user, roomId}: { user: User, roomId: string },
     requestToInvite: () => void,
     inviteToRestartAccepted: () => void,
-    handleUserLeft: () => void,
-  ) {
+    handleUserLeft: () => void) {
     this.socket.emit('join-to-game', {user, roomId})
+
     this.socket.on('invited-to-restart-game', requestToInvite)
     this.socket.on('invite-to-restart-accepted', inviteToRestartAccepted)
     this.socket.on('user-left-game', handleUserLeft)

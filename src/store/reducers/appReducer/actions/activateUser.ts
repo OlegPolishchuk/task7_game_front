@@ -1,14 +1,17 @@
 import {API} from "api";
-import {createAppAsyncThunk} from "hooks";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {
-  setAvailableUsers, setError, setInvitedUser,
-  setIsActive, setIsInvited,
-  setUser,
-  updateUsersAdd, updateUsersRemove
+  setAvailableUsers,
+  setError,
+  setInvitedUser,
+  setIsActive,
+  setIsInvited,
+  setMessages,
+  setUser, updateAvailableUsers,
+  updateUsersAdd,
+  updateUsersRemove
 } from "store/reducers/appReducer/appSlice";
 import {User} from "store/reducers/appReducer/types/types";
-import {refreshInviteState} from "store/reducers/appReducer/actions/refreshInviteState";
 
 export const createConnection = createAsyncThunk(
   'app/activateUser',
@@ -20,7 +23,6 @@ export const createConnection = createAsyncThunk(
       });
 
       API.getUser(user => {
-        console.log(user)
         dispatch(setUser(user))
         dispatch(setIsActive(true))
       })
@@ -29,22 +31,37 @@ export const createConnection = createAsyncThunk(
         (users ) => {
         dispatch(setAvailableUsers(users))
       },
+
         (user) => {
           dispatch(updateUsersAdd(user))
         },
-        user => {
+
+          user => {
           dispatch(updateUsersRemove(user))
         },
+
+        ({message, user}) => {
+          dispatch(setMessages({message, user}))
+        },
+
+        (user) => {
+          const updatedUser = {...user, isInGame: true}
+          dispatch(updateAvailableUsers(updatedUser));
+        },
+
+        (user) => {
+          const updatedUser = {...user, isInGame: false}
+          dispatch(updateAvailableUsers(updatedUser));
+        }
       )
 
       API.userInvitedSubscribe((user: User) => {
-        console.log('userInvitedSubscribe by', user)
         dispatch(setInvitedUser(user));
         dispatch(setIsInvited(true));
       })
 
       API.handlePickedUpInvite((user) => {
-        dispatch(setInvitedUser({username: '', userId: ''}));
+        dispatch(setInvitedUser({username: '', userId: '', isInGame: false}));
         dispatch(setIsInvited(false))
         // dispatch(refreshInviteState(user));
       })
