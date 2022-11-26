@@ -62,8 +62,7 @@ export const createConnection = createAsyncThunk(
 
       API.handlePickedUpInvite((user) => {
         dispatch(setInvitedUser({username: '', userId: '', isInGame: false}));
-        dispatch(setIsInvited(false))
-        // dispatch(refreshInviteState(user));
+        dispatch(setIsInvited(false));
       })
 
     } catch (e) {

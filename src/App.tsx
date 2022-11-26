@@ -38,7 +38,7 @@ export function App() {
   const error = useAppSelector(selectError);
 
   const [showModal, setShowModal] = useState(false);
-  console.log(`user`, currentUser)
+
   const handleUserClick = (user: User) => {
     dispatch(setChosenUser(user));
 

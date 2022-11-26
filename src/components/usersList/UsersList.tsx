@@ -17,10 +17,12 @@ type Props = {
 
 export const UsersList: FC<Props> = ({users, currentUser, userClickCallback}) => {
 
-  const handleUserClick = (user: User) => {
+  const handleUserClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent> ,user: User) => {
+    if (user.isInGame) {
+      return
+    }
     userClickCallback(user);
   }
-  console.log(users)
   return (
     <List dense  sx={{width: '100%', padding: '0'}}>
 
@@ -40,7 +42,8 @@ export const UsersList: FC<Props> = ({users, currentUser, userClickCallback}) =>
         <ListItem
           key={user.userId}
           sx={{padding: '0'}}
-          onClick={() => handleUserClick(user)}
+          onClick={(e) => handleUserClick(e,user)}
+          disabled={user.isInGame}
         >
           <ListItemButton
             sx={{

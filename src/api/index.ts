@@ -7,7 +7,6 @@ export const API = {
   socket: io(URL, {autoConnect: false}),
 
   createConnection(username: string, setLoginError: (error: { message: string }) => void) {
-    console.log('create connection')
     this.socket.auth = {username};
     this.socket.connect();
     this.socket.on('username-error', setLoginError)
@@ -77,13 +76,14 @@ export const API = {
     {user, roomId}: { user: User, roomId: string },
     requestToInvite: () => void,
     inviteToRestartAccepted: () => void,
-    handleUserLeft: () => void) {
+    handleUserLeft: () => void,
+    checkCompetitor: (user: User) => void
+  ) {
     this.socket.emit('join-to-game', {user, roomId})
-
     this.socket.on('invited-to-restart-game', requestToInvite)
     this.socket.on('invite-to-restart-accepted', inviteToRestartAccepted)
     this.socket.on('user-left-game', handleUserLeft)
-    this.socket.on('user-disconnected', handleUserLeft)
+    this.socket.on('user-disconnected', checkCompetitor)
   },
 
 

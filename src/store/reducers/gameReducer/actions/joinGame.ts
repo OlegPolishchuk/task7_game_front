@@ -11,9 +11,11 @@ import {
 import {User} from "store/reducers/appReducer/types/types";
 import {restartGame} from "store/reducers/gameReducer/actions/restartGame";
 import {setIsUserInGame, updateAvailableUsers} from "store/reducers/appReducer/appSlice";
+import {RootState} from "store/store";
 
-export const joinGame = createAsyncThunk(
-  'game/answerSubscribe', ({user, roomId}: {user: User, roomId: string}, {dispatch}) => {
+export const joinGame = createAsyncThunk<void, {user: User, roomId: string}, {state: RootState} >(
+  'game/answerSubscribe',
+  ({user, roomId}: {user: User, roomId: string}, {dispatch, getState}) => {
 
     dispatch(setCurrentUser(user));
     dispatch(setIsUserInGame(true))
@@ -31,6 +33,13 @@ export const joinGame = createAsyncThunk(
       () => {
         dispatch(setIsCompetitorLeft(true))
       },
+
+      (user) => {
+        const competitor = getState().gameReducer.competitor;
+        if (user.userId === competitor.userId) {
+          dispatch(setIsCompetitorLeft(true))
+        }
+      }
     );
 
     API.waitMyTurn((newBoardState) => {
