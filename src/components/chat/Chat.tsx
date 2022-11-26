@@ -90,6 +90,7 @@ export const Chat: FC<Props> = ({users, currentUser, handleUserClick}) => {
             id="filled-basic"
             placeholder={'write something'}
             variant="outlined"
+            autoComplete={'off'}
             onKeyPress={handleSendMessage}
             sx={{'&:focus': {border: 'none'}}}
           />
