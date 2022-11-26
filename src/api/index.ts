@@ -1,7 +1,7 @@
 import {io} from "socket.io-client";
 import {User} from "store/reducers/appReducer/types/types";
 
-const URL = "http://localhost:5000";
+const URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 export const API = {
   socket: io(URL, {autoConnect: false}),
